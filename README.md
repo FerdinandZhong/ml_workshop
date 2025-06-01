@@ -21,9 +21,12 @@
   * Set the disk space to be 29GB
   ![disk_space](https://github.com/FerdinandZhong/ml_workshop/blob/main/images/disk_space_setting.png?raw=true)
   * Append the following inbound rules configuration (under security)
-  ![Inbound Rules Configuration](https://github.com/FerdinandZhong/ml_workshop/blob/main/images/configure_ec2_instance_inbound_rules.png?raw=true)
-    * 8000 for serving the model
-    * 8089 for stress testing
+    * Go to the instance detail page
+    * In the `Security` tab, find the security group and click on the ID.
+    * Click `Edit inbound rules` to add the following two rules:
+    ![Inbound Rules Configuration](https://github.com/FerdinandZhong/ml_workshop/blob/main/images/configure_ec2_instance_inbound_rules.png?raw=true)
+      * 8000 for serving the model
+      * 8089 for stress testing
 
 * Connect to your instance
 ![ec2_connection](https://github.com/FerdinandZhong/ml_workshop/blob/main/images/connect_to_ec2.png?raw=true)
@@ -44,6 +47,10 @@ cd ml_workshop
 bash start.sh
 ```
 
+* The `start.sh` script will create the conda environment for following workshop steps.
+* The script will also install the smart and user-friendly command line shell for Linux -- `fish`
+  * Reference: [fish shell](https://fishshell.com/)
+  * The fish shell has been configured to work with conda by the `start.sh` script.
 * After successfully setting up the environment, it's recommended to create a `tmux` session for the following operations.
 * Tmux cheetsheet for your reference (open the cheetsheet in another tab): [tmux_cheetsheet](https://tmuxcheatsheet.com/)
 * `tmux new -s <anyname you prefered>`
@@ -128,14 +135,28 @@ There's also a sample Dockerfile for building the docker image for this simple i
 * You can verify your simple running application from the instance:
   * `ctrl+b, c`
 
-  * 
+  * Simple request sample:
     ```shell
-    curl -X POST "http://localhost:8000/predict"   -H "Content-Type: application/json"  -d '{"text": "Your text content here"}'
+    curl -X POST "http://localhost:8000/predict"   -H "Content-Type: application/json"  -d '{"text": "I love this movie!s"}'
     ```
-    Sample request text:
-    ```
-    This is just a precious little diamond. The play, the script are excellent. I cant compare this movie with anything else, maybe except the movie "Leon" wonderfully played by Jean Reno and Natalie Portman. But... What can I say about this one? This is the best movie Anne Parillaud has ever played in (See please "Frankie Starlight", she's speaking English there) to see what I mean. The story of young punk girl Nikita, taken into the depraved world of the secret government forces has been exceptionally over used by Americans. Never mind the "Point of no return" and especially the "La femme Nikita" TV series. They cannot compare the original believe me! Trash these videos. Buy this one, do not rent it, BUY it. BTW beware of the subtitles of the LA company which "translate" the US release. What a disgrace! If you cant understand French, get a dubbed version. But you'll regret later :)
-    ```
+  * Sample request with the real review.
+    * Create the below json payload:
+      * `vim payload.json`
+      * Type `i`
+      * Copy the below content into the file:
+      ```json
+      {
+        "text": "This is just a precious little diamond. The play, the script are excellent. I cant compare this movie with anything else, maybe except the movie \"Leon\" wonderfully played by Jean Reno and Natalie Portman. But... What can I say about this one? This is the best movie Anne Parillaud has ever played in (See please \"Frankie Starlight\", she's speaking English there\\) to see what I mean. The story of young punk girl Nikita, taken into the depraved world of the secret government forces has been exceptionally over used by Americans. Never mind the \"Point of no return\" and especially the \"La femme Nikita\" TV series. They cannot compare the original believe me! Trash these videos. Buy this one, do not rent it, BUY it. BTW beware of the subtitles of the LA company which \"translate\" the US release. What a disgrace! If you cant understand French, get a dubbed version. But you'll regret later :)"
+      }
+      ```
+      * Type `esc`
+      * Type `:x` followed by hit `enter`
+    * Run the query
+      ```shell
+      curl -X POST "http://localhost:8000/predict" \
+        -H "Content-Type: application/json" \
+        -d @payload.json
+      ```
 * You can also verify the prometheus client is running with the endpoint `/metrics` by running the below cmd in the same tmux window
   ```shell
   curl -X GET http://localhost:8000/metrics
@@ -177,7 +198,11 @@ git clone https://github.com/FerdinandZhong/ml_workshop.git
 In the first tmux window of instance_b, let's set up the prometheus server
 
 * Install the Prometheus Server as the first step:
-  * `wget https://github.com/prometheus/prometheus/releases/download/v2.37.5/prometheus-2.37.5.linux-amd64.tar.gz`
+  * Download the binary.
+    ```shell
+    wget https://github.com/prometheus/prometheus/releases/download/v2.37.5/prometheus-2.37.5.linux-amd64.tar.gz`
+    ```
+
   * Unzip the file
 
     ```shell
@@ -194,6 +219,7 @@ In the first tmux window of instance_b, let's set up the prometheus server
 
 * Run the prometheus server: `./prometheus --config.file=prometheus.yml`
 * You can verify the Prometheus Serve through `http://instance_b_public_ip:9090` in your browser
+  * Refer to the slides page 32 for the PromQL samples.
 
 #### Grafana Dashboard
 
