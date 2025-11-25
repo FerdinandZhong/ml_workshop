@@ -45,6 +45,7 @@ sudo apt-get install -y git
 ```shell
 cd ml_workshop
 bash start.sh
+source ~/.bashrc
 ```
 
 * The `start.sh` will install the required packages for the workshop.
@@ -67,7 +68,6 @@ Use the first window of the tmux session for the training if you decide to use t
 
 #### Install required packages
 
-* `source ~/.bashrc`
 * `fish` (optional, this cmd will activate the specific shell tool -- `fish`)
 * `conda activate workshop-env`
 * `pip install -e .`
