@@ -55,6 +55,8 @@ bash start.sh
 * The script will also install the smart and user-friendly command line shell for Linux -- `fish`
   * Reference: [fish shell](https://fishshell.com/)
   * The fish shell has been configured to work with conda by the `start.sh` script.
+
+#### Tmux
 * After successfully setting up the environment, it's recommended to create a `tmux` session for the following operations.
 * Tmux cheetsheet for your reference (open the cheetsheet in another tab): [tmux_cheetsheet](https://tmuxcheatsheet.com/)
 * `tmux new -s <anyname you prefered>`
