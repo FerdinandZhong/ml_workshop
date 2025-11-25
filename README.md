@@ -47,7 +47,11 @@ cd ml_workshop
 bash start.sh
 ```
 
+* The `start.sh` will install the required packages for the workshop.
 * The `start.sh` script will create the conda environment for following workshop steps.
+
+#### Optional -- Fish
+* Run `bash scripts/fish.sh`
 * The script will also install the smart and user-friendly command line shell for Linux -- `fish`
   * Reference: [fish shell](https://fishshell.com/)
   * The fish shell has been configured to work with conda by the `start.sh` script.
@@ -200,7 +204,7 @@ In the first tmux window of instance_b, let's set up the prometheus server
 * Install the Prometheus Server as the first step:
   * Download the binary.
     ```shell
-    wget https://github.com/prometheus/prometheus/releases/download/v2.37.5/prometheus-2.37.5.linux-amd64.tar.gz`
+    wget https://github.com/prometheus/prometheus/releases/download/v2.37.5/prometheus-2.37.5.linux-amd64.tar.gz
     ```
 
   * Unzip the file
